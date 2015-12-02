@@ -30,7 +30,7 @@ plot(lp)
 
 
 %%
-med=mean(EKG2);
+med=mean(EKG1);
 
 
  for  i = 1 : 1 : length(EKG2) 
@@ -46,13 +46,18 @@ med=mean(EKG2);
  
  %%
 
-EKGnice = makenice(EKG3, 250);
+EKG = EKG3;
+fs = 360;
+ 
+EKGnice = makenice(EKG, fs);
+
+time = length(EKG)/fs
 
 figure(1)
 plot(EKGnice)
  
 %%
-minpeakheight = max(findpeaks(EKGnice))-150;
+minpeakheight = max(findpeaks(EKGnice))-0.8*max(findpeaks(EKGnice));
 
 
 [~,locs_Rwave] = findpeaks(EKGnice,'MinPeakHeight',minpeakheight,...
@@ -60,37 +65,41 @@ minpeakheight = max(findpeaks(EKGnice))-150;
 
 % size(pks)
 figure(2)
-plot(locs_Rwave)
+% plot(locs_Rwave)
 size(locs_Rwave)
-
+beatspermin = length(locs_Rwave)/time*60
 
 
 %%
 
 
-figure
+figure (5)
 hold on
 plot(EKGnice);
 plot(locs_Rwave,EKGnice(locs_Rwave),'rv','MarkerFaceColor','r');
-xlabel('Samples')
-title('R-wave and S-wave in Noisy ECG Signal')
+
+
 
 %%
 A = [];
 
 for n=1:(length(locs_Rwave)- 1)
-    A(n) = locs_Rwave(n + 1)- locs_Rwave(n) 
+    A(n) = locs_Rwave(n + 1)- locs_Rwave(n) ;
 end
 Rmean = mean(A);
 %% 
-
+arrythmias = 0;
 
 for n=1:(length(locs_Rwave)- 1)
-    if locs_Rwave(n + 1)- locs_Rwave(n) > Rmean +30
-        display "arythmia"
+    if locs_Rwave(n + 1)- locs_Rwave(n) > Rmean + Rmean*0.2;
+        %display "arrythmia"
+        arrythmias = arrythmias +1;
     end
-    
+     if locs_Rwave(n + 1)- locs_Rwave(n) < Rmean - Rmean*0.2;
+  %display "arrythmia"
+         arrythmias = arrythmias +1;
+     end
 end
 
-        
+            arrythmias
 
