@@ -1,26 +1,28 @@
 
-EKG5=EKG5(
+EKG2=EKG2(1:5000);
 
-EKG = EKG5;
-fs = 250;
+EKG = EKG2;
+fs = 360;
  
 EKGnice = makenice(EKG, fs);
 
-time = length(EKG)/fs
+time = length(EKG)/fs;
 
-figure(1)
-plot(EKGnice)
  
 
 %%
 
 [time,loc_arr]=checkarrythmia(EKGnice,fs);
 
+%disp(time')
+%%
+
 [~,widepeaks]=findpeaks(EKGnice,...%'MinPeakHeight',minpeakheight,...
     'MinPeakDistance',150,...
 'MinPeakWidth',30);
 
+
 figure (23)
 hold on
 plot(EKGnice);
-plot(widepeaks,EKGnice(widepeaks),'rv','MarkerFaceColor','r');
+plot(loc_arr,EKGnice(loc_arr),'rv','MarkerFaceColor','r');

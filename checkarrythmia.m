@@ -23,22 +23,21 @@ for n=1:(length(Rwave)- 1)
         j=j+1;
     end
 end
+arrythmias
 
-k=0;
-for i=1:length(widths)
-    
-    if widths(i)/fs > 0.08
-        k=k+1;
-    end
-    
+figure (25)
+hold on
+plot(EKG);
+plot(Rwave,EKG(Rwave),'rv','MarkerFaceColor','r');
+
+
+if arrythmias == 0
+   disp('no arrythmias')
+   
+else
+    arrythmiatype(EKG,fs, widths)
 end
 
-if k == 0
-    disp('no number two')
-end
 
-if k>0
-    fprintf('%d arrythmias of type 2 found \n',k)
-end
 
 end
